@@ -32,7 +32,7 @@ class DietType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-primary mt-3'
                 ],
-                'label' => 'Ajouter le régime'
+                'label' => 'Enregistrer'
             ]);
     }
 

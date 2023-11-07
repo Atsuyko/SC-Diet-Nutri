@@ -38,7 +38,7 @@ class DietController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Le nouveau régime à bien été ajouter.'
+                'Le nouveau régime à bien été ajouté.'
             );
 
             return $this->redirectToRoute('diet');
@@ -47,5 +47,44 @@ class DietController extends AbstractController
         return $this->render('diet/new.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/diet/edit/{id}', name: 'diet.edit', methods: ['GET', 'POST'])]
+    public function edit(Diet $diet, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(DietType::class, $diet);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $diet = $form->getData();
+
+            $em->persist($diet);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Le régime à bien été modifié.'
+            );
+
+            return $this->redirectToRoute('diet');
+        }
+
+        return $this->render('diet/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/diet/delete/{id}', name: 'diet.delete', methods: ['GET'])]
+    public function delete(Diet $diet, EntityManagerInterface $em): Response
+    {
+        $em->remove($diet);
+        $em->flush();
+
+        $this->addFlash(
+            'success',
+            'Le régime à bien été supprimé.'
+        );
+
+        return $this->redirectToRoute('diet');
     }
 }

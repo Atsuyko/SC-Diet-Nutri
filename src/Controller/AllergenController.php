@@ -38,7 +38,7 @@ class AllergenController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Le nouvel allergène à bien été ajouter.'
+                'Le nouvel allergène à bien été ajouté.'
             );
 
             return $this->redirectToRoute('allergen');
@@ -47,5 +47,44 @@ class AllergenController extends AbstractController
         return $this->render('allergen/new.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/allergen/edit/{id}', name: 'allergen.edit', methods: ['GET', 'POST'])]
+    public function edit(Allergen $allergen, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(AllergenType::class, $allergen);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $allergen = $form->getData();
+
+            $em->persist($allergen);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'L\'allergène à bien été modifié.'
+            );
+
+            return $this->redirectToRoute('allergen');
+        }
+
+        return $this->render('allergen/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/allergen/delete/{id}', name: 'allergen.delete', methods: ['GET'])]
+    public function delete(Allergen $allergen, EntityManagerInterface $em): Response
+    {
+        $em->remove($allergen);
+        $em->flush();
+
+        $this->addFlash(
+            'success',
+            'L\allergen à bien été supprimé.'
+        );
+
+        return $this->redirectToRoute('allergen');
     }
 }
