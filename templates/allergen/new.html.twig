@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container">
+  <h1 class="display-3 mt-3">Ajouter un nouvel allergène</h1>
+  {{ form_start(form) }}
+  <div class="form-group">
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+    <div class="form-error">
+      {{ form_errors(form.name) }}
+    </div>
+  </div>
+  <div class="form-group">
+    {{ form_row(form.submit) }}
+  </div>
+  {{ form_end(form) }}
+</div>
+{% endblock body %}

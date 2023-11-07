@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SC Diet & Nutri - Régimes{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="display-3 mt-3">Régimes</h1>
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-dismissible alert-success mt-3">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <a href="{{ path('diet.new')}}" class="btn btn-secondary my-3"> Ajouter un nouveau régime</a>
+    {% for diet in diets %}
+    <div>
+        <p>{{ diet.name }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

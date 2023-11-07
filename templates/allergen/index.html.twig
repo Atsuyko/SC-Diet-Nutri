@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SC Diet & Nutri - Allergènes{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="display-3 mt-3">Allergènes</h1>
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-dismissible alert-success mt-3">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <a href="{{ path('allergen.new')}}" class="btn btn-secondary my-3"> Ajouter un nouvel allergène</a>
+    {% for allergen in allergens %}
+    <div>
+        <p>{{ allergen.name }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

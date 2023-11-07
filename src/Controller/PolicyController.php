@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PolicyController extends AbstractController
 {
-    #[Route('/policy', name: 'app_policy')]
+    #[Route('/policy', name: 'policy')]
     public function index(): Response
     {
         return $this->render('policy/index.html.twig');
