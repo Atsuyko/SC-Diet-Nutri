@@ -11,8 +11,6 @@ class NoticeController extends AbstractController
     #[Route('/notice', name: 'app_notice')]
     public function index(): Response
     {
-        return $this->render('notice/index.html.twig', [
-            'controller_name' => 'NoticeController',
-        ]);
+        return $this->render('notice/index.html.twig');
     }
 }
