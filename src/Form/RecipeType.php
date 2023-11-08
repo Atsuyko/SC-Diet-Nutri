@@ -92,7 +92,7 @@ class RecipeType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => 'Ingrédient (séparés par ",")',
+                'label' => 'Ingrédients (séparés par ",")',
                 'label_attr' => [
                     'class' => 'form-label mt-3'
                 ],
@@ -104,7 +104,7 @@ class RecipeType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => 'Etapes (ex Etape 1 : ... ; Etape 2 : ... ;)',
+                'label' => 'Etapes (ex Etape 1 : ... ; Etape 2 : ... ; )',
                 'label_attr' => [
                     'class' => 'form-label mt-3'
                 ],

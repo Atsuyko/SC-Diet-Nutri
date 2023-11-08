@@ -29,9 +29,13 @@ class Allergen
     #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'allergens')]
     private Collection $recipes;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'allergens')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->recipes = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -73,6 +77,33 @@ class Allergen
     {
         if ($this->recipes->removeElement($recipe)) {
             $recipe->removeAllergen($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addAllergen($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeAllergen($this);
         }
 
         return $this;
