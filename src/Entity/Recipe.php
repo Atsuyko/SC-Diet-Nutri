@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
-#[UniqueEntity('name')]
+#[UniqueEntity('title')]
 class Recipe
 {
     #[ORM\Id]
@@ -33,14 +33,17 @@ class Recipe
 
     #[ORM\Column]
     #[Assert\NotBlank()]
+    #[Assert\Positive()]
     private ?int $preparation_time = null;
 
     #[ORM\Column]
     #[Assert\NotBlank()]
+    #[Assert\PositiveOrZero()]
     private ?int $timeout = null;
 
     #[ORM\Column]
     #[Assert\NotBlank()]
+    #[Assert\PositiveOrZero()]
     private ?int $cooking_time = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -52,6 +55,7 @@ class Recipe
     private ?string $steps = null;
 
     #[ORM\Column]
+    #[Assert\NotNull()]
     private ?bool $isPremium = null;
 
     #[ORM\ManyToMany(targetEntity: Diet::class, inversedBy: 'recipes')]

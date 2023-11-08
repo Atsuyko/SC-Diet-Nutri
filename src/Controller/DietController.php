@@ -13,6 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DietController extends AbstractController
 {
+    /**
+     * Display all diets
+     *
+     * @param DietRepository $dietRepository
+     * @return Response
+     */
     #[Route('/diet', name: 'diet', methods: ['GET'])]
     public function index(DietRepository $dietRepository): Response
     {
@@ -23,6 +29,13 @@ class DietController extends AbstractController
         ]);
     }
 
+    /**
+     * Create a diet
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/diet/new', name: 'diet.new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -49,6 +62,14 @@ class DietController extends AbstractController
         ]);
     }
 
+    /**
+     * Edit a diet
+     *
+     * @param Diet $diet
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/diet/edit/{id}', name: 'diet.edit', methods: ['GET', 'POST'])]
     public function edit(Diet $diet, Request $request, EntityManagerInterface $em): Response
     {
@@ -74,6 +95,13 @@ class DietController extends AbstractController
         ]);
     }
 
+    /**
+     * Delete a diet
+     *
+     * @param Diet $diet
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/diet/delete/{id}', name: 'diet.delete', methods: ['GET'])]
     public function delete(Diet $diet, EntityManagerInterface $em): Response
     {

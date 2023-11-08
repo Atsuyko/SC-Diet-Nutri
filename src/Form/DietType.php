@@ -30,7 +30,7 @@ class DietType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary mt-3'
+                    'class' => 'btn btn-outline-primary mt-3'
                 ],
                 'label' => 'Enregistrer'
             ]);

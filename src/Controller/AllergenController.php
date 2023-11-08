@@ -13,6 +13,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AllergenController extends AbstractController
 {
+    /**
+     * Display all allergens
+     *
+     * @param AllergenRepository $allergenRepository
+     * @return Response
+     */
     #[Route('/allergen', name: 'allergen', methods: ['GET'])]
     public function index(AllergenRepository $allergenRepository): Response
     {
@@ -23,6 +29,13 @@ class AllergenController extends AbstractController
         ]);
     }
 
+    /**
+     * Create an allergen
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/allergen/new', name: 'allergen.new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -49,6 +62,14 @@ class AllergenController extends AbstractController
         ]);
     }
 
+    /**
+     * Edit an allergen
+     *
+     * @param Allergen $allergen
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/allergen/edit/{id}', name: 'allergen.edit', methods: ['GET', 'POST'])]
     public function edit(Allergen $allergen, Request $request, EntityManagerInterface $em): Response
     {
@@ -74,6 +95,13 @@ class AllergenController extends AbstractController
         ]);
     }
 
+    /**
+     * Delete an allergen
+     *
+     * @param Allergen $allergen
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
     #[Route('/allergen/delete/{id}', name: 'allergen.delete', methods: ['GET'])]
     public function delete(Allergen $allergen, EntityManagerInterface $em): Response
     {
