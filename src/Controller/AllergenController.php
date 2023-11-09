@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AllergenController extends AbstractController
@@ -20,6 +21,7 @@ class AllergenController extends AbstractController
      * @return Response
      */
     #[Route('/allergen', name: 'allergen', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(AllergenRepository $allergenRepository): Response
     {
         $allergens = $allergenRepository->findAll();
@@ -37,6 +39,7 @@ class AllergenController extends AbstractController
      * @return Response
      */
     #[Route('/allergen/new', name: 'allergen.new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $allergen = new Allergen();
@@ -71,6 +74,7 @@ class AllergenController extends AbstractController
      * @return Response
      */
     #[Route('/allergen/edit/{id}', name: 'allergen.edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Allergen $allergen, Request $request, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(AllergenType::class, $allergen);
@@ -103,6 +107,7 @@ class AllergenController extends AbstractController
      * @return Response
      */
     #[Route('/allergen/delete/{id}', name: 'allergen.delete', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Allergen $allergen, EntityManagerInterface $em): Response
     {
         $em->remove($allergen);

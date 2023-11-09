@@ -3,7 +3,6 @@
 {% block title %}SC Diet & Nutri - Recettes{% endblock %}
 
 {% block body %}
-
 <div class="container">
     <h1 class="display-3 mt-3">Recettes</h1>
     {% for message in app.flashes('success') %}
@@ -12,8 +11,12 @@
         {{ message }}
     </div>
     {% endfor %}
+    {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
     <a href="{{ path('recipe.new')}}" class="btn btn-outline-primary my-3"> Ajouter une nouvelle recette</a>
-    {% for recipe in recipes %}
+    {% endif %}
+    {% for recipe in recipes %} {# Get all the recipes #}
+    {% if app.user %} {# Check if user is logged in #}
+    {% if 'ROLE_ADMIN' in app.user.roles %} {# Check if the user is admin #}
     <div class="card my-3 p-3">
         <h3 class="card-title">{{ recipe.title }}</h3>
         <h5 class="card-subtitle my-3">
@@ -53,6 +56,65 @@
             </a>
         </p>
     </div>
-    {% endfor %}
+    {% endif %} {# End admin check #}
+    {% for diet in app.user.diets %} {# Get all diets of current user #}
+    {% if diet in recipe.diets %} {# Check if user's diets and recipe's diets match #}
+    {% for allergen in app.user.allergens %} {# Get all allergers of current user #}
+    {% if allergen not in recipe.allergens %} {# Check if user's allergens and recipe's allergens not match #}
+    <div class="card my-3 p-3">
+        <h3 class="card-title">{{ recipe.title }}</h3>
+        <h5 class="card-subtitle my-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-stopwatch"
+                viewBox="0 0 16 16">
+                <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z" />
+                <path
+                    d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3z" />
+            </svg>
+            {{ recipe.preparationTime + recipe.timeout + recipe.cookingTime }} min
+        </h5>
+        <p class="card-text">{{ recipe.description }}</p>
+        <p class="card-text">
+            <a href="{{ path('recipe.show', {id: recipe.id}) }}" class="ml-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    class="bi bi-eye text-primary" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+                </svg>
+            </a>
+        </p>
+    </div>
+    {% endif %} {# End allergens check #}
+    {% endfor %} {# End allergens loop #}
+    {% endif %} {# End diets check #}
+    {% endfor %} {# End diets loop #}
+    {% else %} {# If user is not logged in #}
+    {% if recipe.isPremium == false %} {# Check if is not a premium recipe #}
+    <div class="card my-3 p-3">
+        <h3 class="card-title">{{ recipe.title }}</h3>
+        <h5 class="card-subtitle my-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-stopwatch"
+                viewBox="0 0 16 16">
+                <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z" />
+                <path
+                    d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3z" />
+            </svg>
+            {{ recipe.preparationTime + recipe.timeout + recipe.cookingTime }} min
+        </h5>
+        <p class="card-text">{{ recipe.description }}</p>
+        <p class="card-text">
+            <a href="{{ path('recipe.show', {id: recipe.id}) }}" class="ml-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    class="bi bi-eye text-primary" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+                </svg>
+            </a>
+        </p>
+    </div>
+    {% endif %} {# End premium check #}
+    {% endif %} {# End user logged in check #}
+    {% endfor %} {# End recipes loop #}
 </div>
 {% endblock %}

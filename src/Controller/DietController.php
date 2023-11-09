@@ -6,10 +6,11 @@ use App\Entity\Diet;
 use App\Form\DietType;
 use App\Repository\DietRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DietController extends AbstractController
 {
@@ -20,6 +21,7 @@ class DietController extends AbstractController
      * @return Response
      */
     #[Route('/diet', name: 'diet', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(DietRepository $dietRepository): Response
     {
         $diets = $dietRepository->findAll();
@@ -37,6 +39,7 @@ class DietController extends AbstractController
      * @return Response
      */
     #[Route('/diet/new', name: 'diet.new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $diet = new Diet();
@@ -71,6 +74,7 @@ class DietController extends AbstractController
      * @return Response
      */
     #[Route('/diet/edit/{id}', name: 'diet.edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Diet $diet, Request $request, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(DietType::class, $diet);
@@ -103,6 +107,7 @@ class DietController extends AbstractController
      * @return Response
      */
     #[Route('/diet/delete/{id}', name: 'diet.delete', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Diet $diet, EntityManagerInterface $em): Response
     {
         $em->remove($diet);

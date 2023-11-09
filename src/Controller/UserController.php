@@ -4,17 +4,26 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\UpdateUserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
+    /**
+     * Display all users
+     *
+     * @param UserRepository $userRepository
+     * @return Response
+     */
     #[Route('/user', name: 'user')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
@@ -35,6 +44,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/user/new', name: 'user.new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
@@ -75,9 +85,10 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/user/edit/{id}', name: 'user.edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(User $user, Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UpdateUserType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -107,6 +118,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/user/delete/{id}', name: 'user.delete', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(User $user, EntityManagerInterface $em): Response
     {
         $em->remove($user);

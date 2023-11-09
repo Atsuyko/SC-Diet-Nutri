@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RecipeController extends AbstractController
@@ -30,7 +31,7 @@ class RecipeController extends AbstractController
     }
 
     /**
-     * Displau one recipe
+     * Display one recipe
      *
      * @param Recipe $recipe
      * @return Response
@@ -90,6 +91,7 @@ class RecipeController extends AbstractController
      * @return Response
      */
     #[Route('/recipe/edit/{id}', name: 'recipe.edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Recipe $recipe, Request $request, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(RecipeType::class, $recipe);
@@ -122,6 +124,7 @@ class RecipeController extends AbstractController
      * @return Response
      */
     #[Route('/recipe/delete/{id}', name: 'recipe.delete', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Recipe $recipe, EntityManagerInterface $em): Response
     {
         $em->remove($recipe);

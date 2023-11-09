@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-class UserType extends AbstractType
+class UpdateUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -33,28 +33,6 @@ class UserType extends AbstractType
                     new Assert\Email(),
                     new Assert\NotBlank()
                 ]
-            ])
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options'  => [
-                    'attr' => [
-                        'class' => 'form-control',
-                    ],
-                    'label' => 'Password',
-                    'label_attr' => [
-                        'class' => 'form-label',
-                    ],
-                ],
-                'second_options' => [
-                    'attr' => [
-                        'class' => 'form-control',
-                    ],
-                    'label' => 'Confirm Password',
-                    'label_attr' => [
-                        'class' => 'form-label',
-                    ],
-                ],
-                'mapped' => false,
             ])
             ->add('lastname', TextType::class, [
                 'attr' => [
