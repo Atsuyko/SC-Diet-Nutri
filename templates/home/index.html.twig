@@ -5,6 +5,14 @@
 {% block body %}
 <div class="container mt-3">
     <h1 class="display-3">Sandrine Coupart <br> Diététicienne & Nutritionniste</h1>
+
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-dismissible alert-success mt-3">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
     <p class="mt-3">
         Je suis Sandrine Coupart, une diététicienne nutritionniste qualifiée avec 10 années d'expérience. Ma passion
         pour la nutrition et la santé m'a poussée à aider mes patients à vivre une

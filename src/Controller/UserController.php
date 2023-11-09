@@ -133,9 +133,26 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user');
     }
 
+    /**
+     * Edit user password
+     *
+     * @param User $user
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @return Response
+     */
     #[Route('/user/password/{id}', name: 'user.password', methods: ['GET', 'POST'])]
     public function editPassword(User $user, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('login');
+        }
+
+        if ($this->getUser() !== $user) {
+            return $this->redirectToRoute('home');
+        }
+
         $form = $this->createForm(UserPasswordType::class);
 
         $form->handleRequest($request);

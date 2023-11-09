@@ -71,7 +71,7 @@ class RecipeController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'La nouvelle recette à bien été ajouté.'
+                'La nouvelle recette à bien été ajoutée.'
             );
 
             return $this->redirectToRoute('recipe');
@@ -105,7 +105,7 @@ class RecipeController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'La recette à bien été modifié.'
+                'La recette à bien été modifiée.'
             );
 
             return $this->redirectToRoute('recipe');
@@ -132,7 +132,7 @@ class RecipeController extends AbstractController
 
         $this->addFlash(
             'success',
-            'La recette à bien été supprimé.'
+            'La recette à bien été supprimée.'
         );
 
         return $this->redirectToRoute('recipe');
