@@ -34,7 +34,7 @@
           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
             aria-expanded="false">{{ app.user.firstname }} {{ app.user.lastname }}</a>
           <div class="dropdown-menu bg-secondary">
-            <a class="dropdown-item" href="#">Modifier mon password</a>
+            <a class="dropdown-item" href="{{ path('user.password', {id: app.user.id}) }}">Modifier mon password</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ path('logout') }}">Déconnexion</a>
           </div>

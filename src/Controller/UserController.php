@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\UpdateUserType;
+use App\Form\UserPasswordType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,7 +66,7 @@ class UserController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Le nouveau patient à bien été ajouté.'
+                'Le nouvel utilisateur à bien été ajouté.'
             );
 
             return $this->redirectToRoute('user');
@@ -99,7 +100,7 @@ class UserController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Le patient à bien été modifié.'
+                'L\'utilisateur à bien été modifié.'
             );
 
             return $this->redirectToRoute('user');
@@ -126,9 +127,46 @@ class UserController extends AbstractController
 
         $this->addFlash(
             'success',
-            'La recette à bien été supprimé.'
+            'L\'utilisateur à bien été supprimé.'
         );
 
         return $this->redirectToRoute('user');
+    }
+
+    #[Route('/user/password/{id}', name: 'user.password', methods: ['GET', 'POST'])]
+    public function editPassword(User $user, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        $form = $this->createForm(UserPasswordType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($userPasswordHasher->isPasswordValid($user, $form->getData()['password'])) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->getData()['newPassword']
+                    )
+                );
+
+                $em->persist($user);
+                $em->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Votre password à bien été modifié.'
+                );
+
+                return $this->redirectToRoute('recipe');
+            } else {
+                $this->addFlash(
+                    'secondary',
+                    'Votre password est incorrect.'
+                );
+            }
+        }
+
+        return $this->render('user/password.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

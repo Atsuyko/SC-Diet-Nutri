@@ -17,6 +17,9 @@
     <div class="card my-3 p-3">
         <h3 class="card-title">{{ user.firstname }} {{ user.lastname }} </h3>
         <p class="card-text">{{ user.email }}</p>
+        {% if user.roles[0] == 'ROLE_ADMIN' %}
+        <p class="card-text">COMPTE ADMINISTRATEUR</p>
+        {% else %}
         <p class="card-text">
             Régimes alimentaires concernés :
         <ul>
@@ -33,6 +36,7 @@
             {% endfor %}
         </ul>
         </p>
+        {% endif %}
         <p class="card-text">
             <a href="{{ path('user.edit', {id: user.id}) }}" class="mx-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
