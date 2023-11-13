@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
+use App\Form\OpinionType;
 use App\Form\RecipeType;
+use App\Repository\OpinionRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class RecipeController extends AbstractController
 {
@@ -37,15 +40,21 @@ class RecipeController extends AbstractController
      * @return Response
      */
     #[Route('/recipe/show/{id}', name: 'recipe.show', methods: ['GET'])]
-    public function show(Recipe $recipe): Response
+    public function show(Recipe $recipe, RequestStack $requestStack, OpinionRepository $opinionRepository): Response
     {
         $recipeIngredients = explode(',', $recipe->getIngredient());
         $recipeSteps = explode(';', $recipe->getSteps());
 
+        $request = $requestStack->getMainRequest();
+
+        $form = $this->createForm(OpinionType::class, $opinionRepository->new());
+
+
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
             'recipeIngredients' => $recipeIngredients,
-            'recipeSteps' => $recipeSteps
+            'recipeSteps' => $recipeSteps,
+            'form' => $form->createView()
         ]);
     }
 

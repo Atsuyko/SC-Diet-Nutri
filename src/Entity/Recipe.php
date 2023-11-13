@@ -64,10 +64,16 @@ class Recipe
     #[ORM\ManyToMany(targetEntity: Allergen::class, inversedBy: 'recipes')]
     private Collection $allergens;
 
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Opinion::class, orphanRemoval: true)]
+    private Collection $opinions;
+
+    private ?float $average = null;
+
     public function __construct()
     {
         $this->diets = new ArrayCollection();
         $this->allergens = new ArrayCollection();
+        $this->opinions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -217,5 +223,54 @@ class Recipe
         $this->allergens->removeElement($allergen);
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Opinion>
+     */
+    public function getOpinions(): Collection
+    {
+        return $this->opinions;
+    }
+
+    public function addOpinion(Opinion $opinion): static
+    {
+        if (!$this->opinions->contains($opinion)) {
+            $this->opinions->add($opinion);
+            $opinion->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOpinion(Opinion $opinion): static
+    {
+        if ($this->opinions->removeElement($opinion)) {
+            // set the owning side to null (unless already changed)
+            if ($opinion->getRecipe() === $this) {
+                $opinion->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAverage()
+    {
+        $opinions = $this->opinions;
+
+        if ($opinions->toArray() === []) {
+            $this->average = null;
+            return $this->average;
+        }
+
+        $total = 0;
+        foreach ($opinions as $opinion) {
+            $total += $opinion->getNote();
+        }
+
+        $this->average = $total / count($opinions);
+
+        return $this->average;
     }
 }
