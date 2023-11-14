@@ -168,4 +168,26 @@ class RecipeController extends AbstractController
 
         return $this->redirectToRoute('recipe');
     }
+
+    /**
+     * Delete an opinion
+     *
+     * @param Opinion $recipe
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    #[Route('/opinion/delete/{id}', name: 'opinion.delete', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function deleteOpinion(Opinion $opinion, EntityManagerInterface $em): Response
+    {
+        $em->remove($opinion);
+        $em->flush();
+
+        $this->addFlash(
+            'success',
+            'L\'avis à bien été supprimé.'
+        );
+
+        return $this->redirectToRoute('recipe');
+    }
 }

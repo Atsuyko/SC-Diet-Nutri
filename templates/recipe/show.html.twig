@@ -150,11 +150,11 @@
   {% endif %}
 
   {% for opinion in opinions %}
-  {% if recipe.id is same as opinion.recipe.id %}
   <div id="opinions">
+    {% if recipe.id is same as opinion.recipe.id %}
     {% include "opinion/index.html.twig" %}
+    {% endif %}
   </div>
-  {% endif %}
   {% endfor %}
 
 </div>
