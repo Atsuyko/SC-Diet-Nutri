@@ -16,6 +16,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 )]
 class Opinion
 {
+    const SUCCESS = 'SUCCESS';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

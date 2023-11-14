@@ -142,10 +142,21 @@
         </svg>
       </a>
     </p>
-
   </div>
+
+  {% if app.user %}
   <h3 class="my-3">Donnez votre avis sur cette recette</h3>
   {{ form(form) }}
+  {% endif %}
+
+  {% for opinion in opinions %}
+  {% if recipe.id is same as opinion.recipe.id %}
+  <div id="opinions">
+    {% include "opinion/index.html.twig" %}
+  </div>
+  {% endif %}
+  {% endfor %}
+
 </div>
-<script src="{{ asset('assets/script.js') }}"></script>
+<script src="{{ asset('assets/OpinionScript.js') }}"></script>
 {% endblock body %}

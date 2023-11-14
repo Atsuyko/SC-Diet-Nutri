@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Opinion;
 use App\Entity\Recipe;
 use App\Form\OpinionType;
 use App\Form\RecipeType;
@@ -13,7 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Twig\Environment;
 
 class RecipeController extends AbstractController
 {
@@ -35,25 +37,45 @@ class RecipeController extends AbstractController
 
     /**
      * Display one recipe
-     *
+     * Give an opinion for connected user
+     * 
      * @param Recipe $recipe
+     * @param Request $request
+     * @param EntityManagerInterface $em
      * @return Response
      */
-    #[Route('/recipe/show/{id}', name: 'recipe.show', methods: ['GET'])]
-    public function show(Recipe $recipe, RequestStack $requestStack, OpinionRepository $opinionRepository): Response
+    #[Route('/recipe/show/{id}', name: 'recipe.show', methods: ['GET', 'POST'])]
+    public function show(Recipe $recipe, Request $request, EntityManagerInterface $em, OpinionRepository $opinionRepository, Environment $environment): Response
     {
         $recipeIngredients = explode(',', $recipe->getIngredient());
         $recipeSteps = explode(';', $recipe->getSteps());
 
-        $request = $requestStack->getMainRequest();
+        $opinion = new Opinion();
+        $opinion->setUser($this->getUser());
+        $opinion->setRecipe($recipe);
 
-        $form = $this->createForm(OpinionType::class, $opinionRepository->new());
+        $form = $this->createForm(OpinionType::class, $opinion);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $opinion = $form->getData();
+
+            $em->persist($opinion);
+            $em->flush();
+
+            return new JsonResponse([
+                'html' => $environment->render('opinion/index.html.twig', [
+                    'opinion' => $opinion
+                ])
+            ]);
+        }
 
 
         return $this->render('recipe/show.html.twig', [
             'recipe' => $recipe,
             'recipeIngredients' => $recipeIngredients,
             'recipeSteps' => $recipeSteps,
+            'opinions' => $opinionRepository->findAll(),
             'form' => $form->createView()
         ]);
     }

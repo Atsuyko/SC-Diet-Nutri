@@ -21,10 +21,10 @@ class OpinionRepository extends ServiceEntityRepository
         parent::__construct($registry, Opinion::class);
     }
 
-    public function new(): Opinion
-    {
-        $opinion = new Opinion();
+    // public function new(): Opinion
+    // {
+    //     $opinion = new Opinion();
 
-        return $opinion;
-    }
+    //     return $opinion;
+    // }
 }
