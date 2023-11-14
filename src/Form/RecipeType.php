@@ -135,6 +135,12 @@ class RecipeType extends AbstractType
                     return $dietRepository->createQueryBuilder('diet')
                         ->orderBy('diet.name', 'ASC');
                 },
+                'choice_attr' => function () {
+                    return [
+                        'style' => 'margin-left: 10px; margin-right: 2px;',
+                        'class' => 'form-check-input'
+                    ];
+                },
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true
@@ -148,6 +154,12 @@ class RecipeType extends AbstractType
                 'query_builder' => function (AllergenRepository $allergenRepository) {
                     return $allergenRepository->createQueryBuilder('allergen')
                         ->orderBy('allergen.name', 'ASC');
+                },
+                'choice_attr' => function () {
+                    return [
+                        'style' => 'margin-left: 10px; margin-right: 2px;',
+                        'class' => 'form-check-input'
+                    ];
                 },
                 'choice_label' => 'name',
                 'multiple' => true,

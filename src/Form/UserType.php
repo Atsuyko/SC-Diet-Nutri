@@ -88,6 +88,12 @@ class UserType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label mt-3'
                 ],
+                'choice_attr' => function () {
+                    return [
+                        'style' => 'margin-left: 10px; margin-right: 2px;',
+                        'class' => 'form-check-input'
+                    ];
+                },
                 'query_builder' => function (DietRepository $dietRepository) {
                     return $dietRepository->createQueryBuilder('diet')
                         ->orderBy('diet.name', 'ASC');
@@ -105,6 +111,12 @@ class UserType extends AbstractType
                 'query_builder' => function (AllergenRepository $allergenRepository) {
                     return $allergenRepository->createQueryBuilder('allergen')
                         ->orderBy('allergen.name', 'ASC');
+                },
+                'choice_attr' => function () {
+                    return [
+                        'style' => 'margin-left: 10px; margin-right: 2px;',
+                        'class' => 'form-check-input'
+                    ];
                 },
                 'choice_label' => 'name',
                 'multiple' => true,

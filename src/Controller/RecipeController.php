@@ -88,6 +88,7 @@ class RecipeController extends AbstractController
      * @return Response
      */
     #[Route('/recipe/new', name: 'recipe.new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $recipe = new Recipe();

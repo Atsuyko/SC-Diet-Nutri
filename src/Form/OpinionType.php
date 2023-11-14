@@ -25,23 +25,12 @@ class OpinionType extends AbstractType
                     '4' => 4,
                     '5' => 5,
                 ],
-                'choice_attr' => [
-                    '1' => [
-                        'style' => 'margin-right: 2px;'
-                    ],
-                    '2' => [
-                        'style' => 'margin-left: 5px; margin-right: 2px;'
-                    ],
-                    '3' => [
-                        'style' => 'margin-left: 5px; margin-right: 2px;'
-                    ],
-                    '4' => [
-                        'style' => 'margin-left: 5px; margin-right: 2px;'
-                    ],
-                    '5' => [
-                        'style' => 'margin-left: 5px; margin-right: 2px;'
-                    ]
-                ],
+                'choice_attr' => function () {
+                    return [
+                        'style' => 'margin-left: 10px; margin-right: 2px;',
+                        'class' => 'form-check-input'
+                    ];
+                },
                 'label' => 'Note',
                 'label_attr' => [
                     'class' => 'form-label'
